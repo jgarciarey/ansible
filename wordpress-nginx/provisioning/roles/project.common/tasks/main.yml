@@ -1,0 +1,9 @@
+---
+# tasks file for project.common
+- name: Install required tools
+  apt: 
+    name:
+      - unzip
+    state: present
+    allow_unauthenticated: yes
+    force: true

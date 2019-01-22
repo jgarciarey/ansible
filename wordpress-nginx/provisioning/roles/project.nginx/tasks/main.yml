@@ -1,0 +1,12 @@
+---
+# tasks file for project.nginx
+# Install Nginx
+- name: Install nginx
+  apt: name=nginx state=latest allow_unauthenticated=yes force=true
+
+- name: Start nginx
+  service: name=nginx state=started
+
+- name: Create ngix config
+  template: src=default dest=/etc/nginx/sites-available/default
+  notify: Restart nginx

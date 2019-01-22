@@ -1,0 +1,41 @@
+---
+# tasks file for project.wordpress
+- name: Copy wordpress.zip in tmp
+  copy: src=wordpress.zip dest=/tmp/wordpress.zip
+
+- name: Unzip wordpress
+  unarchive: src=/tmp/wordpress.zip dest=/tmp creates=/tmp/wordpress/wp-settings.php copy=no
+
+- name: Create project folder
+  file: dest=/var/www/book.example.com state=directory
+
+- name: Copy wordpress files
+  command: cp -a /tmp/wordpress/. /var/www/book.example.com creates=/var/www/book.example.com/wp-settings.php
+
+- name: Create WordPress MySQL database
+  mysql_db: name=wordpress state=present
+
+- name: Create WordPress MySQL user
+  mysql_user: name=wordpress host=localhost password=bananas priv=wordpress.*:ALL
+
+- name: Create wp-config.php
+  template: src=wp-config.php dest=/var/www/book.example.com/wp-config.php
+   #- name: Stop mysql
+      #service: name=mysql state=stopped
+      #when: mysql_new_root_pass.changed
+
+    #- name: mysqld_safe
+    #  command: mysqld_safe --skip-grant-tables --skip-networking &
+    #  when: mysql_new_root_pass.changed
+
+    #- name: Login mysql -u root
+    #  command: mysql -u root
+     # when: mysql_new_root_pass.changed
+
+    #- name: Update password root mysql
+    #  command: UPDATE mysql.user SET authentication_string =PASSWORD('{{mysql_new_root_pass.stdout}}') WHERE User='root';
+    #  when: mysql_new_root_pass.changed
+
+    #- name: Stop mysql
+    #  service: name=mysql state=started
+    #  when: mysql_new_root_pass.changed
