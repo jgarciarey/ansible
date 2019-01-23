@@ -3,6 +3,9 @@
 - name: Copy wordpress.zip in tmp
   copy: src=wordpress.zip dest=/tmp/wordpress.zip
 
+- name: Create project folder
+  file: dest=/var/www/{{ url_server }} state=directory
+
 - name: Unzip wordpress
   unarchive: src=/tmp/wordpress.zip dest=/tmp creates=/tmp/wordpress/wp-settings.php copy=no
 
@@ -13,9 +16,6 @@
     line="DocumentRoot /var/www/{{ url_server }}"
   notify:
     - Restart apache
-
-- name: Create project folder
-  file: dest=/var/www/{{ url_server }} state=directory
 
 - name: Copy wordpress files
   command: cp -a /tmp/wordpress/. /var/www/{{ url_server }} creates=/var/www/{{ url_server }}/wp-settings.php
