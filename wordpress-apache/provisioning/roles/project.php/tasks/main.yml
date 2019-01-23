@@ -1,0 +1,8 @@
+---
+# tasks file for project.php
+- name: Install PHP
+  apt: 
+    name:
+      - php5-gd
+      - libssh2-php
+    state: present

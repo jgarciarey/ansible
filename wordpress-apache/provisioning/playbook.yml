@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - project.common
+    - project.mysql
+    - project.php
+    - project.server
+    - project.wordpress
